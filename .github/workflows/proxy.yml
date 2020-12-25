@@ -1,0 +1,33 @@
+name: PROXY
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  PROXY:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.5
+
+      - name: Install pip package
+        run: |
+          pip install git+https://github.com/fate0/getproxy.git@master
+
+      - name: Get proxy
+        run: |
+          rm proxy.list
+          getproxy --in-proxy=proxy.list --out-proxy=proxy.list
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update proxy list
+          commit_options: '--no-verify --signoff'
+          repository: .
+          commit_user_name: Angga
+          commit_user_email: angga@linuxmail.org
+          commit_author: Angga <angga@linuxmail.org>
