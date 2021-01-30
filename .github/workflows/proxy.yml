@@ -1,7 +1,7 @@
 name: PROXY
 on:
-  schedule:
-    - cron: '*/15 * * * *'
+  push:
+    branches: [ '*' ]
 
 jobs:
   PROXY:
